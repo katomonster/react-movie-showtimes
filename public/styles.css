@@ -2,41 +2,33 @@ body {
   background: #F2F2F2;
   font-family: Helvetica, Arial, Sans-serif;
 }
-
 ul {
   list-style: none;
 }
-
 input[type=radio] {
   display: none;
 }
 label {
   cursor: pointer;
 }
-
 h2 {
   margin: 0;
   color: #2E2E2E;
   font-size: 1.2rem;
 }
-
 .App {
   width: 420px;
   margin: 4rem auto;
 }
-
 /* SEARCH */
 .search--wrapper {
   box-sizing: border-box;
 }
-
 .search--wrapper input,
 .results--wrapper {
-
   border: 1px solid #ccc;
-  box-shadow: 1px 1px 3px rgba(0,0,0,.5);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
-
 .search--wrapper input {
   box-sizing: border-box;
   width: 100%;
@@ -62,7 +54,10 @@ h2 {
   color: #8B8989;
   box-sizing: border-box;
 }
-
+.nav--theaters a.active {
+  color: orange;
+  border-bottom: 4px solid orange;
+}
 .nav--theaters label {
   display: block;
   width: 100%;
@@ -74,34 +69,21 @@ h2 {
   overflow: hidden;
   box-sizing: border-box;
 }
-
-.nav--theaters a.active {
-  color: orange;
-  border-bottom: 4px solid orange;
-}
-
 /* RESULTS*/
 .results--wrapper {
   background: #FFF;
   padding: 0;
   padding: 24px;
 }
-
 .results--item {
+  display: flex;
+  align-items: center;
   overflow: hidden;
   margin-bottom: 20px;
 }
-
-.results--item:last-child{
+.results--item:last-child {
   margin-bottom: 0;
 }
-
-.results--item {
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-}
-
 .results--item figure {
   min-width: 100px;
   min-height: 150px;
@@ -112,18 +94,15 @@ h2 {
   overflow: hidden;
   background: #ccc;
 }
-
 .results--item img {
   width: 100%;
 }
-
 .result--info h2 span {
   color: #ccc;
   font-size: .8rem;
   font-weight: normal;
   margin-left: .5rem;
 }
-
 .result--showtime {
   font-size: .8rem;
   margin-top: 0.8rem;
@@ -133,7 +112,6 @@ h2 {
   display: inline-block;
   margin-right: 0.4rem;
 }
-
 @media (max-width: 420px) {
   .App {
     width: 90vw;
@@ -144,10 +122,9 @@ h2 {
     line-height: 40px;
     display: block;
     background: #fff;
-    box-shadow: 1px 1px 3px rgba(0,0,0,.5);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
   }
-
   .nav--theaters a.active {
     color: #fff;
     background: orange;
@@ -166,5 +143,7 @@ h2 {
     min-width: 100%;
     margin: 0;
   }
-  .result--info { width: 100%; }
+  .result--info {
+    width: 100%;
+  }
 }

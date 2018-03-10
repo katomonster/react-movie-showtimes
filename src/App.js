@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 
 const MOVIE_META_DATA = require('./movieMetaData.json');
 const MOVIE_SHOWTIMES = require('./movieShowtimes.json');
