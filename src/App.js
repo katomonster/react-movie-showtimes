@@ -65,13 +65,13 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <div className="search--wrapper">
+                <div className="search__wrapper">
                     <input type="text" id="search--input" placeholder="Search Movies..." onChange={(e) => this.searchMovie(e)}/>
                 </div>
                 <nav className="nav--theaters">
                     <MovieTheaters showtimes={this.state.movieShowtimes} selectedTheater={this.state.selectedTheater} onChange={(name) => this.setCurrentData(name)} slug={this.stringSlugify}></MovieTheaters>
                 </nav>
-                <ul className="results--wrapper">
+                <ul className="results__wrapper">
                     <MovieList movieData={this.state.selectedData}></MovieList>
                 </ul>
             </div>
@@ -129,11 +129,26 @@ const MovieTheaters = (props) => {
 }
 
 const MovieList = (props) => {
+    const hour = new Date().getHours() * 60;
+    const min = new Date().getMinutes();
+    const curtime = (hour + min);
+
     return (
         props.movieData.map((data, i) => {
-            const showtimes = data.showtimes.map((time, i) => {
+            let sorted = [];
+            const obj = data.showtimes.map((time) => {
+                const split = time.split(" ");
+                const amPm = split[1];
+                const t = split[0].split(":");
+                const hour = amPm === "am" ? parseInt(t[0]) * 60 : (parseInt(t[0]) + 12) * 60;
+                const min = parseInt(t[1]);
+                const startTime = hour + min;
+                sorted.push({time: time, startTime: startTime});
+            });
+            sorted = sorted.sort((a, b) => a.startTime - b.startTime);
+            const showtimes = sorted.map((time, i) => {
                 return (
-                    <span key={i}>{time}</span>
+                    <span key={i} className = {time.startTime < curtime ? "time--past" : ""}>{time.time}</span>
                 );
             });
             return (
