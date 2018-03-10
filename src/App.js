@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+
 const MOVIE_META_DATA = require('./movieMetaData.json');
 const MOVIE_SHOWTIMES = require('./movieShowtimes.json');
-
 
 class App extends Component {
     constructor(props) {
@@ -11,7 +11,7 @@ class App extends Component {
             data: [],
             selectedData: [],
             fullSelectedData:[],
-            selectedTheater: ''
+            selectedTheater: ""
         }
 
         this.movieMetaData = MOVIE_META_DATA;
@@ -20,7 +20,6 @@ class App extends Component {
     }
 
     componentWillMount() {
-       
         this.getMovieData();
     }
 
@@ -28,8 +27,7 @@ class App extends Component {
         document.querySelector(".btn--theater").click();
     }
 
-    getMovieData(id) {
-        // get current theater's data.
+    getMovieData(meta, showtimes) {
         let movieData = [];
         this.movieShowtimes.forEach((theater) => {
             const showtimes = theater.showtimes;
@@ -38,7 +36,6 @@ class App extends Component {
             movieIds.forEach((id, i) => {
                 for (const data of this.movieMetaData) {
                     if (id === data.id) {
-                        //console.log(id);
                         movieArr.push({title: data.title, rating: data.rating, poster: data.poster, showtimes: showtimes[id]});
                     }
                 }
@@ -62,7 +59,6 @@ class App extends Component {
                     <MovieList movieData={this.state.selectedData}></MovieList>
                 </ul>
             </div>
-
         );
     }
 
@@ -89,7 +85,7 @@ class App extends Component {
         this.state.data.forEach((data)=> {
             if (data.name === name) {
                 movieInfo = data.movieInfo;
-                movieTheater = data.name.toLowerCase().replace(" ", "-");
+                movieTheater = data.name.toLowerCase().replace(/\s/g, "-");
             }
         });
         this.setState({
@@ -100,48 +96,41 @@ class App extends Component {
     }
 }
 
-class MovieTheaters extends Component {
-    render() {
-        return (
-            this.props.showtimes.map((showtime, i) => {
-                return (
-                    <a key={i} className={this.props.selectedTheater === showtime.name.toLowerCase().replace(" ", "-") ? "active" : ""}>
-                        <input type="radio" name="theaters" id={`${showtime.name.toLowerCase()}-btn`} onChange={() => this.props.onChange(showtime.name)} className="btn--theater"/>
-                        <label htmlFor ={`${showtime.name.toLowerCase()}-btn`}>{showtime.name}</label>
-                    </a>
-                );
-            })
-        );
-    }
+const MovieTheaters = (props) => {
+    return (
+        props.showtimes.map((showtime, i) => {
+            const showtimeName = showtime.name.toLowerCase().replace(/\s/g, "-");
+            return (
+                <a key={i} className={props.selectedTheater === showtimeName ? "active" : ""}>
+                    <input type="radio" name="theaters" id={`${showtimeName}-btn`} onChange={() => props.onChange(showtime.name)} className="btn--theater"/>
+                    <label htmlFor ={`${showtimeName}-btn`}>{showtime.name}</label>
+                </a>
+            );
+        })
+    );
 }
 
-class MovieList extends Component {
-    
-    render() {
-        
-        return (
-            this.props.movieData.map((data, i) => {
-                const showtimes = data.showtimes.map((time, i) => {
-                    return (
-                        <span key={i}>{time}</span>
-                    );
-                });
+const MovieList = (props) => {
+    return (
+        props.movieData.map((data, i) => {
+            const showtimes = data.showtimes.map((time, i) => {
                 return (
-                    <li key={i} className="results--item">
-                        <div>
-                            <figure>
-                                <img src={data.poster} alt={`${data.title} poster`}/>
-                            </figure>
-                            <div className="result--info">
-                                <h2>{data.title}<span>{`(${data.rating})`}</span></h2>
-                                <div className="result--showtime">{showtimes}</div>
-                            </div>
-                        </div>
-                    </li>
+                    <span key={i}>{time}</span>
                 );
-            })
-        );
-    }
+            });
+            return (
+                <li key={i} className="results--item">
+                    <figure>
+                        <img src={data.poster} alt={`${data.title} poster`}/>
+                    </figure>
+                    <div className="result--info">
+                        <h2>{data.title}<span>{`(${data.rating})`}</span></h2>
+                        <div className="result--showtime">{showtimes}</div>
+                    </div>
+                </li>
+            );
+        })
+    );
 }
 
 export default App;
