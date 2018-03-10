@@ -28,11 +28,11 @@ class App extends Component {
             });
             this.getMovieData();
         });
-        
     }
 
     getMovieData(meta, showtimes) {
         let movieData = [];
+
         this.state.movieShowtimes.forEach((theater) => {
             const showtimes = theater.showtimes;
             const movieIds = Array.from(Object.keys(showtimes));
@@ -44,9 +44,9 @@ class App extends Component {
                     }
                 }
             });
-            movieData.push({ name: theater.name, movieInfo: movieArr.sort((a, b) => a.title.localeCompare(b.title)) });
-            
+            movieData.push({ name: theater.name, movieInfo: movieArr.sort((a, b) => a.title.localeCompare(b.title)) });  
         });
+
         this.setState({
             data: movieData,
             selectedData: movieData[0].movieInfo,
@@ -95,12 +95,14 @@ class App extends Component {
     setCurrentData(name) {
         let movieInfo;
         let movieTheater;
+
         this.state.data.forEach((data)=> {
             if (data.name === name) {
                 movieInfo = data.movieInfo;
                 movieTheater = this.stringSlugify(data.name);
             }
         });
+
         this.setState({
             selectedData: movieInfo,
             fullSelectedData: movieInfo,
