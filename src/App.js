@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-const MOVIE_META_DATA = require('./movieMetaData.json');
-const MOVIE_SHOWTIMES = require('./movieShowtimes.json');
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -10,30 +7,37 @@ class App extends Component {
             data: [],
             selectedData: [],
             fullSelectedData:[],
-            selectedTheater: ""
+            selectedTheater: "",
+            movieShowtimes: [],
+            movieMetaData: []
         }
-
-        this.movieMetaData = MOVIE_META_DATA;
-
-        this.movieShowtimes = MOVIE_SHOWTIMES;
     }
 
     componentWillMount() {
-        this.getMovieData();
-    }
+        const getMeta = fetch('json/movieMetaData.json')
+        .then((res) => res.json());
+        const getShowtimes = fetch('json/movieShowtimes.json')
+        .then((res) => res.json());
 
-    componentDidMount() {
-        document.querySelector(".btn--theater").click();
+        Promise.all([getMeta, getShowtimes])
+        .then((val) => {
+            this.setState({
+                movieMetaData: val[0],
+                movieShowtimes: val[1]
+            });
+            this.getMovieData();
+        });
+        
     }
 
     getMovieData(meta, showtimes) {
         let movieData = [];
-        this.movieShowtimes.forEach((theater) => {
+        this.state.movieShowtimes.forEach((theater) => {
             const showtimes = theater.showtimes;
             const movieIds = Array.from(Object.keys(showtimes));
             let movieArr = [];
             movieIds.forEach((id, i) => {
-                for (const data of this.movieMetaData) {
+                for (const data of this.state.movieMetaData) {
                     if (id === data.id) {
                         movieArr.push({title: data.title, rating: data.rating, poster: data.poster, showtimes: showtimes[id]});
                     }
@@ -42,7 +46,16 @@ class App extends Component {
             movieData.push({ name: theater.name, movieInfo: movieArr.sort((a, b) => a.title.localeCompare(b.title)) });
             
         });
-        this.setState({data: movieData});
+        this.setState({
+            data: movieData,
+            selectedData: movieData[0].movieInfo,
+            fullSelectedData: movieData[0].movieInfo,
+            selectedTheater: this.stringSlugify(movieData[0].name)
+        });
+    }
+
+    stringSlugify(str) {
+        return str.toLowerCase().replace(/\s/g, "-");
     }
 
     render() {
@@ -52,7 +65,7 @@ class App extends Component {
                     <input type="text" id="search--input" placeholder="Search Movies..." onChange={(e) => this.searchMovie(e)}/>
                 </div>
                 <nav className="nav--theaters">
-                    <MovieTheaters showtimes={this.movieShowtimes} selectedTheater={this.state.selectedTheater} onChange={(name) => this.setCurrentData(name)}></MovieTheaters>
+                    <MovieTheaters showtimes={this.state.movieShowtimes} selectedTheater={this.state.selectedTheater} onChange={(name) => this.setCurrentData(name)} slug={this.stringSlugify}></MovieTheaters>
                 </nav>
                 <ul className="results--wrapper">
                     <MovieList movieData={this.state.selectedData}></MovieList>
@@ -84,7 +97,7 @@ class App extends Component {
         this.state.data.forEach((data)=> {
             if (data.name === name) {
                 movieInfo = data.movieInfo;
-                movieTheater = data.name.toLowerCase().replace(/\s/g, "-");
+                movieTheater = this.stringSlugify(data.name);
             }
         });
         this.setState({
@@ -98,7 +111,7 @@ class App extends Component {
 const MovieTheaters = (props) => {
     return (
         props.showtimes.map((showtime, i) => {
-            const showtimeName = showtime.name.toLowerCase().replace(/\s/g, "-");
+            const showtimeName = props.slug(showtime.name);
             return (
                 <a key={i} className={props.selectedTheater === showtimeName ? "active" : ""}>
                     <input type="radio" name="theaters" id={`${showtimeName}-btn`} onChange={() => props.onChange(showtime.name)} className="btn--theater"/>
