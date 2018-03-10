@@ -27,6 +27,9 @@ class App extends Component {
                 movieShowtimes: val[1]
             });
             this.getMovieData();
+        })
+        .catch((error) => {
+            console.log("error! ", error);
         });
     }
 
@@ -38,11 +41,11 @@ class App extends Component {
             const movieIds = Array.from(Object.keys(showtimes));
             let movieArr = [];
             movieIds.forEach((id, i) => {
-                for (const data of this.state.movieMetaData) {
+                this.state.movieMetaData.forEach((data) => {
                     if (id === data.id) {
                         movieArr.push({title: data.title, rating: data.rating, poster: data.poster, showtimes: showtimes[id]});
                     }
-                }
+                });
             });
             movieData.push({ name: theater.name, movieInfo: movieArr.sort((a, b) => a.title.localeCompare(b.title)) });  
         });
