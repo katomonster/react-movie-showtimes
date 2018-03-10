@@ -16,6 +16,7 @@ class App extends Component {
     componentWillMount() {
         const getMeta = fetch('json/movieMetaData.json')
         .then((res) => res.json());
+
         const getShowtimes = fetch('json/movieShowtimes.json')
         .then((res) => res.json());
 
