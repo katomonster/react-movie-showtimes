@@ -45,7 +45,7 @@ class App extends Component {
             movieIds.forEach((id, i) => {
                 this.state.movieMetaData.forEach((data) => {
                     if (id === data.id) {
-                        movieArr.push({title: data.title, rating: data.rating, poster: data.poster, showtimes: showtimes[id]});
+                        movieArr.push({title: data.title, rating: data.rating, poster: data.poster, showtimes: this.getSortedShowtimes(showtimes[id])});
                     }
                 });
             });
@@ -58,6 +58,18 @@ class App extends Component {
             fullSelectedData: movieData[0].movieInfo,
             selectedTheater: this.stringSlugify(movieData[0].name)
         });
+    }
+
+    getSortedShowtimes(showtimes){
+        return showtimes.map((time) => {
+            const split = time.split(" ");
+            const amPm = split[1];
+            const hm = split[0].split(":");
+            const hour = amPm === "am" ? parseInt(hm[0], 10) * 60 : (parseInt(hm[0], 10) + 12) * 60;
+            const min = parseInt(hm[1], 10);
+            const startTime = hour + min;
+            return {formatted: time, number: startTime};
+        }).sort((a, b) => a.number - b.number);
     }
 
     stringSlugify(str) {
