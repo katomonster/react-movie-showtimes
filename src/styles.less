@@ -37,7 +37,21 @@ h2 {
             background: url(react.svg) no-repeat;
             vertical-align: middle;
             margin-right: 0.6rem;
+            animation: rotate 3s infinite linear;
+            transform-origin: 48.8% 49.5%;
         }
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 

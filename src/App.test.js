@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+import './../public/json/movieMetaData.json';
 
 const metaData = [
     {
@@ -347,7 +348,7 @@ describe('#getMovieData', () => {
 					],
 					"name": "Pacific Theatres"
 				}
-			],
+			],	
 			"fullSelectedData": [
 				{
 					"poster": "movie_posters/anthropoid.jpg",
