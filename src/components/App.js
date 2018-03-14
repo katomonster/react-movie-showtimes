@@ -28,7 +28,7 @@ class App extends Component {
                 movieMetaData: val[0],
                 movieShowtimes: val[1]
             });
-            this.getMovieData();
+            this.setMovieDataStates(this.getMovieData());
         })
         .catch((error) => {
             console.log("error! ", error);
@@ -38,12 +38,16 @@ class App extends Component {
     getMovieData(meta, showtimes) {
         let movieData = [];
 
-        this.state.movieShowtimes.forEach((theater) => {
+        const movieShowtimes = this.state.movieShowtimes.length ? this.state.movieShowtimes : showtimes;
+
+        const movieMetaData = this.state.movieMetaData.length ?this.state.movieMetaData : meta;
+
+        movieShowtimes.forEach((theater) => {
             const showtimes = theater.showtimes;
             const movieIds = Array.from(Object.keys(showtimes));
             let movieArr = [];
             movieIds.forEach((id, i) => {
-                this.state.movieMetaData.forEach((data) => {
+                movieMetaData.forEach((data) => {
                     if (id === data.id) {
                         movieArr.push({title: data.title, rating: data.rating, poster: data.poster, showtimes: this.getSortedShowtimes(showtimes[id])});
                     }
@@ -51,12 +55,21 @@ class App extends Component {
             });
             movieData.push({ name: theater.name, movieInfo: movieArr.sort((a, b) => a.title.localeCompare(b.title)) });  
         });
-
-        this.setState({
+        return {
             data: movieData,
             selectedData: movieData[0].movieInfo,
             fullSelectedData: movieData[0].movieInfo,
             selectedTheater: this.stringSlugify(movieData[0].name)
+        };
+    }
+
+    setMovieDataStates(movieData) {
+        const {data,selectedData, fullSelectedData, selectedTheater} = movieData;
+        this.setState({
+            data,
+            selectedData,
+            fullSelectedData,
+            selectedTheater
         });
     }
 
