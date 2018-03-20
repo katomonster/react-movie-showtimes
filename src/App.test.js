@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import './../public/json/movieMetaData.json';
+import assert from 'assert';
 
 const metaData = [
     {
@@ -530,4 +531,123 @@ describe('#getMovieData', () => {
 			"selectedTheater": "arclight"
 		});
 	});
+});
+
+describe('#getMovieData', () => {
+	const app = new App();
+	it('shows movie data info for each theater', () => {
+		app.state.movieMetaData = metaData;
+		app.state.movieShowtimes = showtimesData;
+		const data = app.getMovieData(metaData, showtimesData);
+		expect(data.data[0].movieInfo).toEqual(
+			[
+				{
+					"poster": "movie_posters/anthropoid.jpg",
+					"rating": "R",
+					"showtimes": [
+						{"formatted": "10:45 am", "number": 645},
+						{"formatted": "11:20 am", "number": 680},
+						{"formatted": "5:40 pm", "number": 1060},
+						{"formatted": "8:05 pm", "number": 1205},
+						{"formatted": "12:15 pm", "number": 1455}
+					],
+					"title": "Anthropoid"
+				},
+				{
+					"poster": "movie_posters/doctor_strange.jpg",
+					"rating": "PG-13",
+					"showtimes": [
+						{"formatted": "10:30 am", "number": 630},
+						{"formatted": "2:25 pm", "number": 865},
+						{"formatted": "6:20 pm", "number": 1100},
+						{"formatted": "9:40 pm", "number": 1300}
+					],
+					"title": "Doctor Strange"
+				},
+				{
+					"poster": "movie_posters/fifty_shades_darker.jpg",
+					"rating": "R",
+					"showtimes": [
+						{"formatted": "2:45 pm", "number": 885},
+						{"formatted": "4:15 pm", "number": 975},
+						{"formatted": "8:35 pm", "number": 1235},
+						{"formatted": "10:30 pm", "number": 1350},
+						{"formatted": "11:30 pm", "number": 1410}
+					],
+					"title": "Fifty Shades Darker"
+				},
+				{
+					"poster": "movie_posters/jurassic_world.jpg",
+					"rating": "PG-13",
+					"showtimes": [
+						{"formatted": "12:35 am", "number": 755},
+						{"formatted": "3:50 pm", "number": 950},
+						{"formatted": "5:15 pm", "number": 1035},
+						{"formatted": "9:55 pm", "number": 1315},
+						{"formatted": "12:20 pm", "number": 1460},
+						{"formatted": "12:50 pm", "number": 1490}
+					],
+				"title": "Jurassic World"},
+				{
+					"poster": "movie_posters/mad_max.jpg",
+					"rating": "R",
+					"showtimes": [
+						{"formatted": "11:00 am", "number": 660},
+						{"formatted": "2:35 pm", "number": 875},
+						{"formatted": "3:10 pm", "number": 910},
+						{"formatted": "5:35 pm", "number": 1055},
+						{"formatted": "9:25 pm", "number": 1285},
+						{"formatted": "11:25 pm", "number": 1405}
+					],
+					"title": "Mad Max: Fury Road"
+				}, {
+					"poster": "movie_posters/nocturnal_animals.jpg",
+					"rating": "R",
+					"showtimes": [
+						{"formatted": "10:00 am", "number": 600},
+						{"formatted": "3:30 pm", "number": 930},
+						{"formatted": "5:25 pm", "number": 1045},
+						{"formatted": "9:15 pm", "number": 1275}, 
+						{"formatted": "11:55 pm", "number": 1435},
+						{"formatted": "12:30 pm", "number": 1470}
+					],
+					"title": "Nocturnal Animals"
+				},
+				{
+					"poster": "movie_posters/war_dogs.jpg",
+					"rating": "R",
+					"showtimes": [
+						{"formatted": "8:30 am", "number": 510},
+						{"formatted": "1:25 pm", "number": 805},
+						{"formatted": "4:10 pm", "number": 970},
+						{"formatted": "7:25 pm", "number": 1165},
+						{"formatted": "9:25 pm", "number": 1285},
+						{"formatted": "12:05 pm", "number": 1445}
+					],
+					"title": "War Dogs"
+				}
+			]
+		);
+
+	});
+});
+
+describe('Shows the correct movie poster', () => {
+	const app = new App();
+	app.state.movieMetaData = metaData;
+	app.state.movieShowtimes = showtimesData;
+	const data = app.getMovieData(metaData, showtimesData);
+	it('shows the correct movie poster for the first index', () => {
+		assert(data.data[0].movieInfo[0].poster === 'movie_posters/anthropoid.jpg');
+	})
+});
+
+describe('Shows the selected theater', () => {
+	const app = new App();
+	app.state.movieMetaData = metaData;
+	app.state.movieShowtimes = showtimesData;
+	const data = app.getMovieData(metaData, showtimesData);
+	it('shows the correct selected theater', () => {
+		assert(data.selectedTheater === "arclight");
+	})
 });
