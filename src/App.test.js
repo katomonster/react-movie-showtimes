@@ -162,6 +162,51 @@ describe('#stringSlugify', () => {
 	});
 });
 
+describe('#getMetaData', () => {
+	const app = new App();
+	it('shows empty object when passing empty object', () => {
+		const data = app.getMovieData([], []);
+		expect(data).toEqual([]);
+	});
+});
+
+describe('#getMetaData', () => {
+	const app = new App();
+	it('shows empty object when passing at least empty object', () => {
+		const data = app.getMovieData(metaData, []);
+		expect(data).toEqual([]);
+	});
+});
+
+describe('#getMetaData', () => {
+	const app = new App();
+	it('shows empty object when passing at least empty object', () => {
+		const data = app.getMovieData([], showtimesData);
+		expect(data).toEqual([]);
+	});
+});
+
+
+describe('Shows the correct movie poster', () => {
+	const app = new App();
+	app.state.movieMetaData = metaData;
+	app.state.movieShowtimes = showtimesData;
+	const data = app.getMovieData(metaData, showtimesData);
+	it('shows the correct movie poster for the first index', () => {
+		assert(data.data[0].movieInfo[0].poster === 'movie_posters/anthropoid.jpg');
+	})
+});
+
+describe('Shows the selected theater', () => {
+	const app = new App();
+	app.state.movieMetaData = metaData;
+	app.state.movieShowtimes = showtimesData;
+	const data = app.getMovieData(metaData, showtimesData);
+	it('shows the correct selected theater', () => {
+		assert(data.selectedTheater === "arclight");
+	})
+});
+
 describe('#getMovieData', () => {
 	const app = new App();
 	it('shows movie data info for each theater', () => {
@@ -632,22 +677,3 @@ describe('#getMovieData', () => {
 	});
 });
 
-describe('Shows the correct movie poster', () => {
-	const app = new App();
-	app.state.movieMetaData = metaData;
-	app.state.movieShowtimes = showtimesData;
-	const data = app.getMovieData(metaData, showtimesData);
-	it('shows the correct movie poster for the first index', () => {
-		assert(data.data[0].movieInfo[0].poster === 'movie_posters/anthropoid.jpg');
-	})
-});
-
-describe('Shows the selected theater', () => {
-	const app = new App();
-	app.state.movieMetaData = metaData;
-	app.state.movieShowtimes = showtimesData;
-	const data = app.getMovieData(metaData, showtimesData);
-	it('shows the correct selected theater', () => {
-		assert(data.selectedTheater === "arclight");
-	})
-});

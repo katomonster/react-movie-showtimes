@@ -42,6 +42,8 @@ class App extends Component {
 
         const movieMetaData = this.state.movieMetaData.length ?this.state.movieMetaData : meta;
 
+        if (!movieShowtimes.length || !movieMetaData.length) return [];
+
         movieShowtimes.forEach((theater) => {
             const showtimes = theater.showtimes;
             const movieIds = Array.from(Object.keys(showtimes));
