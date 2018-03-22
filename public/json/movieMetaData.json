@@ -6,6 +6,12 @@
         "poster": "movie_posters/the_great_wall.jpg"
     },
     {
+        "id": "440cc42b43bbcb8b5d38fbdede9e22f1",
+        "title": "The Gret Wall",
+        "rating": "PG-13",
+        "poster": "movie_posters/the_great_wall.jpg"
+    },
+    {
         "id": "b4c2c326a4d335da654d4fd944bf88d0",
         "title": "Fifty Shades Darker",
         "rating": "R",

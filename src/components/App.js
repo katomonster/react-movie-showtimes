@@ -111,7 +111,7 @@ class App extends Component {
         const val = e.target.value.toLowerCase();
         let matches = [];
 
-        for (const data of this.state.selectedData) {
+        for (const data of this.state.fullSelectedData) {
             if (val && val === data.title.toLowerCase().slice(0, val.length)) {
                 matches.push(data);
             }
