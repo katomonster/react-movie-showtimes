@@ -4,6 +4,8 @@ import App from './components/App';
 import './../public/json/movieMetaData.json';
 import assert from 'assert';
 
+let app, data;
+
 const metaData = [
     {
         "id": "440cc42b43bbcb8b5d38fbdede9e22f1",
@@ -125,6 +127,7 @@ it('renders without crashing', () => {
 });
 beforeEach(() => {
 	console.log('before each');
+	app = new App();
 });
 
 describe('Hello World', () => {
@@ -133,7 +136,6 @@ describe('Hello World', () => {
 });
 
 describe('#getSortedShowtimes', () => {
-	const app = new App();
 	it('sorts showtimes into formatted and number in an object', () => {
 		const showtimes = [
 			'11:30 pm', '10:30 am'
@@ -151,7 +153,6 @@ describe('#getSortedShowtimes', () => {
 });
 
 describe('#stringSlugify', () => {
-	const app = new App();
 	const string = "hello my friend";
 	const string2 = 'Antwerp';
 	it('replaces spaces to hyphen in a string', () => {
@@ -162,53 +163,38 @@ describe('#stringSlugify', () => {
 	});
 });
 
-describe('#getMetaData', () => {
-	const app = new App();
-	it('shows empty object when passing empty object', () => {
-		const data = app.getMovieData([], []);
-		expect(data).toEqual([]);
-	});
-});
-
-describe('#getMetaData', () => {
-	const app = new App();
-	it('shows empty object when passing at least empty object', () => {
-		const data = app.getMovieData(metaData, []);
-		expect(data).toEqual([]);
-	});
-});
-
-describe('#getMetaData', () => {
-	const app = new App();
-	it('shows empty object when passing at least empty object', () => {
-		const data = app.getMovieData([], showtimesData);
-		expect(data).toEqual([]);
-	});
-});
-
-
-describe('Shows the correct movie poster', () => {
-	const app = new App();
-	app.state.movieMetaData = metaData;
-	app.state.movieShowtimes = showtimesData;
-	const data = app.getMovieData(metaData, showtimesData);
+describe('Shows the correct data value', () => {
 	it('shows the correct movie poster for the first index', () => {
+		app.state.movieMetaData = metaData;
+		app.state.movieShowtimes = showtimesData;
+		const data = app.getMovieData(metaData, showtimesData);
 		assert(data.data[0].movieInfo[0].poster === 'movie_posters/anthropoid.jpg');
 	})
-});
 
-describe('Shows the selected theater', () => {
-	const app = new App();
-	app.state.movieMetaData = metaData;
-	app.state.movieShowtimes = showtimesData;
-	const data = app.getMovieData(metaData, showtimesData);
 	it('shows the correct selected theater', () => {
+		app.state.movieMetaData = metaData;
+		app.state.movieShowtimes = showtimesData;
+		const data = app.getMovieData(metaData, showtimesData);
 		assert(data.selectedTheater === "arclight");
 	})
 });
 
-describe('#getMovieData', () => {
-	const app = new App();
+describe('#getMetaData', () => {
+	it('shows empty object when passing empty object', () => {
+		const data = app.getMovieData([], []);
+		expect(data).toEqual([]);
+	});
+
+	it('shows empty object when passing at least empty object', () => {
+		const data = app.getMovieData(metaData, []);
+		expect(data).toEqual([]);
+	});
+
+	it('shows empty object when passing at least empty object', () => {
+		const data = app.getMovieData([], showtimesData);
+		expect(data).toEqual([]);
+	});
+
 	it('shows movie data info for each theater', () => {
 		app.state.movieMetaData = metaData;
 		app.state.movieShowtimes = showtimesData;
@@ -576,10 +562,7 @@ describe('#getMovieData', () => {
 			"selectedTheater": "arclight"
 		});
 	});
-});
 
-describe('#getMovieData', () => {
-	const app = new App();
 	it('shows movie data info for each theater', () => {
 		app.state.movieMetaData = metaData;
 		app.state.movieShowtimes = showtimesData;
