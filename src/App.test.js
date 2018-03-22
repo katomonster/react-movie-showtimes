@@ -4,7 +4,7 @@ import App from './components/App';
 import './../public/json/movieMetaData.json';
 import assert from 'assert';
 
-let app, data;
+let app;
 
 const metaData = [
     {
